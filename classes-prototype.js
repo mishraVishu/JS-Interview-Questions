@@ -107,3 +107,23 @@ c.greet(); // "Hello from Parent and Child"
 console.log(Object.getPrototypeOf(c) === Child.prototype)
 console.log(Object.getPrototypeOf(Child.prototype) === Parent.prototype)
 console.log(Object.getPrototypeOf(Parent.prototype) === Object.prototype)
+
+// Ques6 - what does new Keyword do behind the scene?
+//The new keyword in JavaScript does the following behind the scenes:
+
+// 1.Creates a new empty object: {}
+// 2.Sets the prototype of the new object to the constructor’s prototype: obj.__proto__ = Constructor.prototype
+// 3.Binds this inside the constructor to the new object.
+// 4.Executes the constructor function with the given arguments.
+// 5.If the constructor returns an object, that object is returned. Otherwise, the new object is returned.
+
+//Example: 
+function Person(name) {
+    this.name = name;
+}
+const p2 = new Person("Vaishali");
+// Steps:
+// 1. const p2 = {};
+// 2. p2.__proto__ = Person.prototype
+// 3. Person.call(p2, "Vaishali")
+// 4. If Person returns nothing, p is returned
