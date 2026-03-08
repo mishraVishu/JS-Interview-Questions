@@ -261,4 +261,4 @@ console.log(rect.area); // 100
 rect.height = -3; // "Height must be positive"
 console.log(rect.height); // 5 (unchanged)
 
-//Getters and setters allow you to add logic when reading or updating properties, such as validation or returning computed values.
+//Getters and setters allow you to add logic when reading or updating properties, such as validation or returning computed values.₹
