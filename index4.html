@@ -1,11 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
+    <h3>Debounce and Throttle</h3>
+    <button class="increment-btn">Increment</button>
+    <p>Button Pressed <span class="increment_pressed">0</span> Times</p>
+    <p>Trigged <span class="increment_count">0</span Times></p>
+
+    <h3>Event Propagation</h3>
+    <div style="border: 1px solid red; padding:1rem;">
+        div
+        <form style="border: 1px solid red; padding:1rem;">
+            form
+            <button id="btn" style="padding:1rem;">Button</button>
+        </form>
+    </div>
+    <h3>Event Delefation</h3>
+    <ul id="list">
+        <li>Item 1</li>
+        <li>Item 2</li>
+    </ul>
+    <h3>Modal Content</h3>
+    <button class="modalButton">open modal</button>
+    <div class="modalContainer">
+        <div class="modal" style="display: none;height: 200px;width:200px;border:1px solid black;">Modal Content</div>
+    </div>
+    <!-- 
     <script src="./promise.js"></script>
+    <script src="./debounce-throttle.js"></script> -->
+    <script src="./event-propagation.js"></script>
 </body>
+
 </html>
