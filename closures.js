@@ -178,19 +178,34 @@ hello(1, 2);
 
 // Ques - 9 Memoize Polyfill
 // Implement the myMemoized() function
+function myMemoized(fn, context, maxSize = 100) {
+    if (typeof fn !== 'function') throw new TypeError('myMemoized: first argument must be a function');
 
-function myMemoized(fn, context) {
     let res = new Map();
-    return function (...arguments) {
-        let cachedArgs = JSON.stringify(arguments);
+
+    function serialize(args) {
+        return args.map(arg => {
+            if (typeof arg === 'function') return `__fn__${arg.toString()}`;
+            if (typeof arg === 'symbol') return `__sym__${arg.toString()}`;
+            if (Number.isNaN(arg)) return '__NaN__';
+            if (arg === Infinity) return '__Infinity__';
+            if (arg === -Infinity) return '__-Infinity__';
+            return JSON.stringify(arg); // handles null, objects, arrays etc.
+        }).join('|');
+    }
+
+    return function (...args) {
+        const cachedArgs = serialize(args);
         if (res.has(cachedArgs)) {
-            // console.log(res.get(cachedArgs));
             return res.get(cachedArgs);
-        } else {
-            let result = fn.apply(context || this, arguments);
-            res.set(cachedArgs, result);
-            return result;
         }
+        const result = fn.apply(context || this, args);
+        // evict oldest entry if cache exceeds maxSize
+        if (res.size >= maxSize) {
+            res.delete(res.keys().next().value);
+        }
+        res.set(cachedArgs, result);
+        return result;
     }
 }
 

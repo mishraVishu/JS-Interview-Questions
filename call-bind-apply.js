@@ -155,7 +155,7 @@ var person2 = {
 
 var person3 = {age: 24};
 
-person2.getAgeArrow.call(person3);// undefined
+person2.getAgeArrow.call(person3);// undefined Arrow functions ignore call, bind, and apply completely.
 person2.getAge.call(person3); // 24
 
 // Question 14 - Polyfill for Call Method
@@ -198,17 +198,31 @@ purchaseCar.myApply(car1,['₹',5000000]);
 
 // polyfill for Bind Method
 
-Function.prototype.myBind = function(context={},...args){
+Function.prototype.myBind = function(context={}, ...args){
     if(typeof this !== 'function'){
         throw new Error(`${this} is not a function`);
     }
-    context.fn = this;
-    return function(...newArgs){
-        context.fn(...args,...newArgs);
+    const self = this;
+    const bound = function(...newArgs){
+        // if called with new, ignore bound context — new creates its own this
+        if(this instanceof bound){
+            return new self(...args, ...newArgs);
+        }
+        return self.apply(context, [...args, ...newArgs]);
     };
-
+    // preserve the original prototype so instanceof checks work correctly
+    bound.prototype = Object.create(self.prototype);
+    return bound;
 }
 
 const newFn = purchaseCar.myBind(car1,'₹',5000000);
 newFn();
 //console.log(newFn('₹',5000000));
+
+
+// bind context    → can be overridden by new ✅
+// bind args       → cannot be overridden, always kept ✅
+// call/apply      → cannot override bind ❌
+// another bind    → cannot override bind ❌
+// new is the only thing that can override a bound this. This is a very rarely known fact even among senior devs!
+// 

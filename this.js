@@ -1,7 +1,7 @@
-// Explain this keyword
+// ? Explain this keyword
 
-// The 'this' keyword in JavaScript refers to the object that is executing the current function.
-// Its value depends on how a function is called:
+// * The 'this' keyword in JavaScript refers to the object that is executing the current function.
+// * Its value depends on how a function is called:
 
 console.log(this); // refers to global Object i.e window object , in browsers and in node env undefined.
 
@@ -14,7 +14,7 @@ Param();
 const greet = () => {
     console.log(this.a) // - 5 Arrow functions don't have their own this.  here this is lexically bound . They get the value of this from their lexical scope where they are defined not from calling object.
 }
-greet(); 
+greet();
 
 let user = {
     name:'Piyush',
@@ -35,7 +35,7 @@ let user2 = {
         }
     }
 }
-user2.childObj.getDetails(); 
+user2.childObj.getDetails();
 
 let user3 = {
     name:'Piyush',
@@ -60,7 +60,7 @@ const newUser = new user4("Vaishali Mishra");
 newUser.getName();
 
 
-// Ques 1 - What is the output?
+// ? Ques 1 - What is the output?
 
 const user5 ={
     firstName: "Vaishali",
@@ -71,7 +71,7 @@ const user5 ={
 }
 user5.getName();
 
-//Ques 2 - What is the result of accessing its ref  and Why?
+// ? Ques 2 - What is the result of accessing its ref  and Why?
 
 function makeUser () {
     return {
@@ -84,13 +84,13 @@ let user6 = makeUser();
 console.log(user6);
 console.log(user6.ref) // here user is the object with name and ref prop where ref is this pointing to global object , which do not have name prop on it so it will print nothing.
 
-// Solution to fix this
+// * Solution to fix this
 function makeUser () {
     return {
         name:'John',
         ref(){
             return this;
-        } 
+        }
     }
 }
 
@@ -98,7 +98,7 @@ let user7 = makeUser();
 console.log(user7.ref());
 console.log(user7.ref().name);
 
-// Ques 3 - What is the output
+// ? Ques 3 - What is the output
 
 const user8 = {
     name: "Vaishali Mishra",
@@ -109,10 +109,10 @@ const user8 = {
 
 setTimeout(() => user.logMessage,1000) // print nothing or nothing because  the function logMessage is passed as a callback and loses its association with the user8 object. As a result, inside logMessage, this refers to the global object (or undefined in strict mode), not to user8.
 
-//solution 
+// * solution
 setTimeout(() => user8.logMessage.call(user8),1000);
 
-// Ques - 4 What is the output
+// ? Ques - 4 What is the output
 
 const user9 = {
     name:'Vaishali',
@@ -124,10 +124,10 @@ const user9 = {
     },
 }
 
-console.log(user9.greet()); // Hello Vaishali 
+console.log(user9.greet()); // Hello Vaishali
 console.log(user9.farewell());// Goodbye undefined
 
-// Ques 5 - Create an object calculator
+// ? Ques 5 - Create an object calculator
 
 // let calculator = {
 //     read(){
@@ -146,7 +146,7 @@ console.log(user9.farewell());// Goodbye undefined
 // console.log(calculator.sum());
 // console.log(calculator.mul());
 
-//Ques 6 - What will be the output
+// ? Ques 6 - What will be the output
 
 var length = 4;
 function callback(){
@@ -164,12 +164,12 @@ object1.method(callback); // 4 When you call object.method(callback);, inside me
 const object = {
     length: 5,
     method(){ //[callback,1,2]
-        arguments[0](); // callback() which is array  so its parent is arraywhich is object so it will rerturn length of args array
+        arguments[0](); //
     }
 }
 object.method(callback,1,2);
 
-// Ques 7 - Implement calc
+// ? Ques 7 - Implement calc
 
 function calc() {
     let res = 0;
