@@ -88,8 +88,8 @@ console.log('\ntempMap after clear:', tempMap.size); // 0
 // ─────────────────────────────────────────────
 const fruitMap = new Map([['apple', 1], ['banana', 2], ['cherry', 3]]);
 console.log('\nmap.keys():');
-for (const key of fruitMap.keys()) {
-    console.log(' ', key); // apple, banana, cherry
+for(let key of fruitMap.keys()){
+    console.log(' ', key)
 }
 
 // ─────────────────────────────────────────────
@@ -129,7 +129,7 @@ fruitMap.forEach((value, key) => {
 // Map:    .size built in
 
 // Convert Map → Object
-const obj = Object.fromEntries(fruitMap);
+const obj = Object.fromEntries(fruitMap)
 console.log('\nMap → Object:', obj); // { apple: 1, banana: 2, cherry: 3 }
 
 // Convert Object → Map
@@ -226,19 +226,19 @@ const A = new Set([1, 2, 3, 4]);
 const B = new Set([3, 4, 5, 6]);
 
 // Union — all elements from both
-const union = new Set([...A, ...B]);
+const union = new Set([...A, ...B])
 console.log('\nUnion:', union); // {1,2,3,4,5,6}
 
 // Intersection — only elements in BOTH
-const intersection = new Set([...A].filter(x => B.has(x)));
+const intersection = new Set([...A].filter(x => B.has(x)))
 console.log('Intersection:', intersection); // {3,4}
 
 // Difference — elements in A but NOT in B
-const difference = new Set([...A].filter(x => !B.has(x)));
+const difference = new Set([...A].filter(x => !B.has(x)))
 console.log('Difference (A-B):', difference); // {1,2}
 
 // Subset check — is A a subset of B?
-const isSubset = [...A].every(x => B.has(x));
+const isSubset = [...A].every(x => B.has(x))
 console.log('A subset of B:', isSubset); // false
 
 // Remove duplicates from array (most common use case)
@@ -266,12 +266,12 @@ const weakMap = new WeakMap();
 // ─────────────────────────────────────────────
 // weakMap.set(key, value) — key MUST be an object
 // ─────────────────────────────────────────────
-let user1 = { name: 'Vaishali' };
-let user2 = { name: 'Rahul' };
+let user1 = { name: 'Vaishali'};
+let user2 = { name: 'Rahul'};
 
-weakMap.set(user1, { role: 'admin', visits: 5 });
-weakMap.set(user2, { role: 'user', visits: 2 });
-console.log('weakMap.set() done');
+weakMap.set(user1, { role: 'admin', visits: 5});
+weakMap.set(user2, { role: 'user', visits: 2});
+console.log('weakMap.set() done', weakMap);
 
 // ─────────────────────────────────────────────
 // weakMap.get(key) — returns value for key
@@ -311,15 +311,15 @@ tempUser = null; // remove the only reference
 const privateData = new WeakMap();
 
 class BankAccount {
-    constructor(owner, balance) {
-        privateData.set(this, { balance }); // balance is private
-        this.owner = owner;                 // owner is public
+    constructor(owner, balance){
+        privateData.set(this, { balance });
+        this.owner = owner;
     }
-    deposit(amount) {
+    deposit(amount){
         privateData.get(this).balance += amount;
     }
-    getBalance() {
-        return privateData.get(this).balance; // controlled access
+    getBalance(){
+        return privateData.get(this).balance;
     }
 }
 
@@ -340,7 +340,7 @@ function processUser(user) {
     }
     const result = { ...user, processed: true, timestamp: Date.now() };
     cache.set(user, result);
-    console.log('  cache miss — computed');
+    console.log('  cache miss — computed', cache);
     return result;
 }
 
@@ -425,15 +425,22 @@ processNode(node1); // skipped — already done
 // Use Case 2: Prevent circular reference / detect visited nodes
 // ─────────────────────────────────────────────
 function deepClone(obj, visited = new WeakSet()) {
-    if (typeof obj !== 'object' || obj === null) return obj;
-    if (visited.has(obj)) return '[Circular]'; // circular reference detected
-    visited.add(obj);
+   if((obj === null) ||  typeof obj !== 'object') return obj;
 
-    const clone = {};
-    for (const key in obj) {
-        clone[key] = deepClone(obj[key], visited);
-    }
-    return clone;
+   if(visited.has(obj)) return obj;
+   visited.add(obj);
+
+   if(Array.isArray(obj)){
+        return obj.map(val => deepClone(val,visited));
+   }
+
+   const clone = {};
+   for(let key in obj){
+        if(obj.hasOwnProperty(key)){
+            clone[key] = deepClone(obj[key],visited); 
+        }
+   }
+   return clone;
 }
 
 const original = { a: 1, b: { c: 2 } };
@@ -612,7 +619,7 @@ console.log('  NaN duplicates:', s.size); // 1 — only one NaN stored
 
 s.add(0);
 s.add(-0); // 0 === -0 is true, SameValueZero also treats as equal
-console.log('  0 and -0:', s.size); // 2 — only one 0 stored
+console.log('  0 and -0:', s.size,s); // 2 — only one 0 stored
 
 
 // ─────────────────────────────────────────────

@@ -159,3 +159,59 @@ promiseAny([
   Promise.reject('success'),
   Promise.reject('error 2')
 ]).then(res => console.log(res));  // 'success'
+
+// Map polyfill
+
+const arr = [1,2,3,4,5];
+
+Array.prototype.myMap = function(fn){
+    const result = [];
+    for(let i=0;i<this.length;i++){
+        result.push(fn(this[i],i,this));
+    }
+    return result;
+}
+
+console.log(arr.myMap(val => val*2));
+
+// Filter polyfill
+
+Array.prototype.myFilter = function(fn){
+    const result = [];
+    for(let i=0;i<this.length;i++){
+        if(fn(this[i],i,this)){
+            result.push(this[i]);
+        }
+    }
+    return result;
+}
+
+console.log(arr.myFilter(val => val>2));
+
+// reduce polyfill
+
+Array.prototype.reduce = function(fn,initialval){
+    if(typeof fn !== 'function') throw new Error("callback fn must be passed");
+
+    let acc;
+    let startIndex = 0;
+
+    if(arguments.length <2){
+        acc = this[0];
+        startIndex = 1;
+    }else{
+        acc = initialval;
+        startIndex = 0;
+    }
+
+    for(let i=startIndex; i< this.length; i++){
+        if(i in this)
+        acc = fn(acc,this[i],i,this)
+    }
+
+    return acc;
+}
+
+console.log(arr.reduce((acc,val) => acc+val,0));
+
+
