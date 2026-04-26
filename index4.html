@@ -2,41 +2,199 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS & DOM Playground</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+    section { border: 1px solid #ccc; border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem; }
+    section h3 { margin: 0 0 0.75rem; color: #333; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .card { display: inline-block; padding: 0.5rem 1rem; background: #e0e0e0; border-radius: 4px; margin-right: 0.5rem; }
+    .card.active { background: #4caf50; color: #fff; }
+    .box { display: inline-block; padding: 10px; border: 2px solid #999; background: #eee; }
+    .visible { outline: 3px solid limegreen; }
+    button { padding: 0.4rem 0.8rem; cursor: pointer; margin-right: 0.5rem; margin-top: 0.25rem; }
+    li { cursor: pointer; padding: 0.2rem 0; }
+    li:hover { background: #f0f0f0; }
+    #dim-box { width: 200px; height: 60px; padding: 10px; border: 2px solid steelblue; overflow: auto; background: #f5f5f5; }
+    #q8-box  { width: 200px; padding: 10px; border: 5px solid navy; overflow: auto; background: #eef; }
+    #widget  { padding: 0.5rem; border: 1px dashed purple; min-height: 40px; }
+    .lazy    { width: 200px; height: 80px; background: #ddd; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 0.85rem; color: #666; }
+    .lazy.visible { background: #c8f7c5; color: #2e7d32; }
+    #mutation-target { padding: 0.5rem; background: #fff9c4; border-radius: 4px; margin-bottom: 0.5rem; }
+    #style-demo { width: 150px; height: 50px; background: #eee; border: 2px solid #999; padding: 10px; display: flex; align-items: center; }
+    a#prevent-link { color: steelblue; text-decoration: underline; cursor: pointer; margin-left: 0.5rem; }
+  </style>
 </head>
 
 <body>
-    <h3>Debounce and Throttle</h3>
-    <button class="increment-btn">Increment</button>
-    <p>Button Pressed <span class="increment_pressed">0</span> Times</p>
-    <p>Trigged <span class="increment_count">0</span Times></p>
 
-    <h3>Event Propagation</h3>
-    <div style="border: 1px solid red; padding:1rem;">
-        div
-        <form style="border: 1px solid red; padding:1rem;">
-            form
-            <button id="btn" style="padding:1rem;">Button</button>
-        </form>
+  <!-- ── S1: SELECTING ELEMENTS ─────────────────────────────── -->
+  <section>
+    <h3>1 · Selecting Elements</h3>
+    <div id="app">I am <code>#app</code></div>
+    <br>
+    <div class="card active">Card 1 (active)</div>
+    <div class="card">Card 2</div>
+    <div class="card">Card 3</div>
+  </section>
+
+  <!-- ── S2: TRAVERSAL ──────────────────────────────────────── -->
+  <section>
+    <h3>2 · DOM Traversal</h3>
+    <div id="parent">
+      <span class="child">Child 1</span>
+      <span class="child">Child 2</span>
+      <span class="child">Child 3</span>
     </div>
-    <h3>Event Delefation</h3>
-    <ul id="list">
-        <li>Item 1</li>
-        <li>Item 2</li>
-    </ul>
-    <h3>Modal Content</h3>
-    <button class="modalButton">open modal</button>
-    <div class="modalContainer">
-        <div class="modal" style="display: none;height: 200px;width:200px;border:1px solid black;">Modal Content</div>
+  </section>
+
+  <!-- ── S3: CREATE & INSERT ────────────────────────────────── -->
+  <section>
+    <h3>3 · Creating &amp; Inserting</h3>
+    <div id="insert-container">
+      <p id="reference" style="background:#ffeeba;padding:0.3rem;border-radius:3px;">I am <code>#reference</code></p>
     </div>
-    <!-- <script src="./promise.js"></script> -->
-    <!-- <script src="./Polyfills.js"></script> -->
-    <script src="./debounce-throttle.js"></script>
-    <!-- <script src="./event-propagation.js"></script>
-    <script src="./array.js"></script> -->
-    <!-- <script src="./maps-sets-weakMap-weakSet.js"></script> -->
+    <button id="insert-btn">Run insertions</button>
+  </section>
+
+  <!-- ── S4: REMOVE & CLONE ─────────────────────────────────── -->
+  <section>
+    <h3>4 · Removing &amp; Cloning</h3>
+    <div id="clone-source" style="background:#d1ecf1;padding:0.4rem;border-radius:3px;">
+      Clone me! <span>with child</span>
+    </div>
+    <div id="clone-target" style="margin-top:0.5rem;"></div>
+    <button id="clone-btn">cloneNode(true)</button>
+    <button id="remove-btn">remove clone</button>
+  </section>
+
+  <!-- ── S5: CONTENT ────────────────────────────────────────── -->
+  <section>
+    <h3>5 · Reading &amp; Writing Content</h3>
+    <div id="content-demo">
+      Original content
+      <span style="display:none">hidden text</span>
+    </div>
+    <button id="set-inner-html">innerHTML</button>
+    <button id="set-text-content">textContent</button>
+    <button id="set-inner-text">innerText</button>
+    <button id="reset-content">reset</button>
+  </section>
+
+  <!-- ── S6: ATTRIBUTES ─────────────────────────────────────── -->
+  <section>
+    <h3>6 · Attributes &amp; Properties</h3>
+    <input id="demo-input" type="text" value="initial" data-user-id="123" style="padding:0.3rem;width:150px;" />
+    <button id="demo-btn" disabled>Disabled Button</button>
+    <button id="enable-btn">Toggle disabled</button>
+    <button id="read-attr-btn">Log attrs</button>
+  </section>
+
+  <!-- ── S7: CLASS & STYLE ──────────────────────────────────── -->
+  <section>
+    <h3>7 · Class &amp; Style Manipulation</h3>
+    <div id="style-demo" class="box old">Style Me</div>
+    <br><br>
+    <button id="add-class-btn">classList.add</button>
+    <button id="toggle-class-btn">classList.toggle</button>
+    <button id="computed-btn">getComputedStyle</button>
+  </section>
+
+  <!-- ── S8: DIMENSIONS ─────────────────────────────────────── -->
+  <section>
+    <h3>8 · Dimensions &amp; Position</h3>
+    <div id="dim-box">
+      <div style="width:400px;height:20px;background:#b2dfdb;">overflow content</div>
+    </div>
+    <button id="dims-btn" style="margin-top:0.5rem;">Log dimensions</button>
+    <button id="rect-btn">getBoundingClientRect</button>
+    <button id="viewport-btn">isInViewport</button>
+  </section>
+
+  <!-- ── S9: EVENTS ─────────────────────────────────────────── -->
+  <section>
+    <h3>9 · Events</h3>
+    <div id="event-demo" style="padding:0.75rem;border:1px solid green;border-radius:4px;margin-bottom:0.5rem;">
+      Click anywhere in this box (event.target demo)
+      <br>
+      <button id="once-btn">{ once: true } — click me</button>
+      <a href="https://example.com" id="prevent-link">prevented link</a>
+    </div>
+    <button id="custom-evt-btn">Dispatch CustomEvent</button>
+  </section>
+
+  <!-- ── EVENT DELEGATION (S9 + Q4 + Q13) ──────────────────── -->
+  <section>
+    <h3>Event Delegation</h3>
+    <nav id="menu">
+      <ul style="list-style:none;padding:0;">
+        <li data-id="m1">Menu Item 1</li>
+        <li data-id="m2">Menu Item 2</li>
+        <li data-id="m3">Menu Item 3</li>
+      </ul>
+    </nav>
+  </section>
+
+  <!-- ── S11: FRAGMENT ──────────────────────────────────────── -->
+  <section>
+    <h3>11 · DocumentFragment</h3>
+    <ul id="fragment-list" style="list-style:disc;padding-left:1.5rem;"></ul>
+    <button id="fragment-btn">Build with fragment</button>
+  </section>
+
+  <!-- ── S12: INTERSECTION OBSERVER ────────────────────────── -->
+  <section>
+    <h3>12 · IntersectionObserver</h3>
+    <p style="font-size:0.85rem;color:#666;">Scroll down — boxes turn green when they enter the viewport.</p>
+    <div class="lazy">Lazy box 1</div>
+    <br>
+    <div class="lazy" style="margin-top:400px;">Lazy box 2 (scroll to reveal)</div>
+    <div class="lazy" style="margin-top:400px;">Lazy box 3 (scroll to reveal)</div>
+  </section>
+
+  <!-- ── S13: MUTATION OBSERVER ────────────────────────────── -->
+  <section>
+    <h3>13 · MutationObserver</h3>
+    <div id="mutation-target">Original text — watch the console when you mutate me</div>
+    <button id="mutate-text-btn">Change text</button>
+    <button id="mutate-child-btn">Add child node</button>
+    <button id="mutate-attr-btn">Change attribute</button>
+  </section>
+
+  <!-- ── Q8: offsetWidth vs clientWidth vs scrollWidth ────── -->
+  <section>
+    <h3>Q8 · offsetWidth vs clientWidth vs scrollWidth</h3>
+    <div id="q8-box">
+      <div style="width:500px;height:20px;background:#c5cae9;">overflow inner (500px wide)</div>
+    </div>
+    <button id="q8-btn" style="margin-top:0.5rem;">Log widths</button>
+  </section>
+
+  <!-- ── Q11: SHADOW DOM ────────────────────────────────────── -->
+  <section>
+    <h3>Q11 · Shadow DOM</h3>
+    <p style="font-size:0.85rem;color:#666;">The red text below is inside a shadow root — external CSS cannot style it.</p>
+    <div id="widget"></div>
+  </section>
+
+  <!-- ── Q13: DYNAMIC DELEGATION ────────────────────────────── -->
+  <section>
+    <h3>Q13 · Dynamic Event Delegation</h3>
+    <p style="font-size:0.85rem;color:#666;">Items added after page load — one listener handles all clicks.</p>
+    <ul id="dynamic-list" style="list-style:none;padding:0;min-height:1rem;"></ul>
+    <button id="add-item-btn">Add item</button>
+  </section>
+
+  <!-- ── Q15: ATTRIBUTE vs PROPERTY ────────────────────────── -->
+  <section>
+    <h3>Q15 · Attribute vs Property</h3>
+    <input id="attr-input" type="text" value="initial-html-value" style="padding:0.3rem;width:200px;" />
+    <button id="attr-prop-btn">Log getAttribute vs .value</button>
+    <p style="font-size:0.85rem;color:#666;">Type something in the input, then click the button.</p>
+  </section>
+
+  <script src="./dom.js"></script>
 </body>
 
 </html>
